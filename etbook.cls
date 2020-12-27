@@ -1,19 +1,17 @@
 %%%%%%%%%%%%%%%%%%%%%%
-%% start of file `elegantbook.cls'.
-%% Copyright 2013-2020 ElegantLaTeX (elegantlatex2e@gmail.com)
+%% start of file `etbook.cls'.
 %%
 %% This work may be distributed and/or modified freely
-%% available at https://github.com/ElegantLaTeX/ElegantBook
 % 
 %%%%%%%%%%%%%%%%%%%%%
 % % !Mode:: "TeX:UTF-8"
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{elegantbook}[2020/04/12 v3.11 ElegantBook document class]
+\ProvidesClass{etbook}[2020/12/25 v1.0 etbook document class]
 
 \RequirePackage{kvoptions}
 \RequirePackage{etoolbox}
-\SetupKeyvalOptions{family=ELEGANT, prefix=ELEGANT@, setkeys=\kvsetkeys}
-\newcommand{\ekv}[1]{\kvsetkeys{ELEGANT}{#1}}
+\SetupKeyvalOptions{family=ET, prefix=ET@, setkeys=\kvsetkeys}
+\newcommand{\ekv}[1]{\kvsetkeys{ET}{#1}}
 
 % ----- Colors -----
 \DeclareStringOption[blue]{color}
@@ -38,6 +36,7 @@
 
 \DeclareVoidOption{ctexfont}{\ekv{chinesefont=ctexfont}}
 \DeclareVoidOption{founder}{\ekv{chinesefont=founder}}
+\DeclareVoidOption{macos}{\ekv{chinesefont=macos}}
 \DeclareVoidOption{nofont}{\ekv{chinesefont=nofont}}
 
 \DeclareVoidOption{en}{\ekv{lang=en}}
@@ -93,7 +92,7 @@
   linktoc=all,
   bookmarksnumbered=true,
   bookmarksopen=true,
-  pdfkeywords={ElegantBook},
+  pdfkeywords={etbook},
   colorlinks,
   linkcolor=winered,
   citecolor=winered,
@@ -106,7 +105,7 @@
 
 %% device settings
 \RequirePackage{geometry}
-\ifdefstring{\ELEGANT@device}{normal}{
+\ifdefstring{\ET@device}{normal}{
   \geometry{
     a4paper,
     top=25.4mm, bottom=25.4mm,
@@ -114,13 +113,13 @@
     headsep=4mm,
     footskip=12mm
   }
-  \ifdefstring{\ELEGANT@marginpar}{margintrue}{
+  \ifdefstring{\ET@marginpar}{margintrue}{
     \geometry{
       marginparwidth=5cm, marginparsep=5mm,
-      left=2cm,right=7cm}}{\relax}}{
+      left=2cm,right=5cm}}{\relax}}{
     \relax}
 
-\ifdefstring{\ELEGANT@device}{pad}{
+\ifdefstring{\ET@device}{pad}{
 \geometry{
   paperwidth=7.5in, 
   paperheight=10in,
@@ -131,7 +130,7 @@
 
 \RequirePackage{indentfirst,comment}
 % fontsetting
-\ifdefstring{\ELEGANT@math}{mtpro2}{
+\ifdefstring{\ET@math}{mtpro2}{
   \let\Bbbk\relax
   \RequirePackage[lite]{mtpro2}
 }{\relax}
@@ -140,9 +139,9 @@
 
 \PassOptionsToPackage{no-math}{fontspec}
 \RequirePackage{iftex}
-\ifdefstring{\ELEGANT@lang}{cn}{
+\ifdefstring{\ET@lang}{cn}{
   \ifXeTeX
-    \ifdefstring{\ELEGANT@chinesefont}{founder}{
+    \ifdefstring{\ET@chinesefont}{founder}{
       \RequirePackage[UTF8,scheme=plain,fontset=none]{ctex}
       \setCJKmainfont[BoldFont={FZHei-B01},ItalicFont={FZKai-Z03}]{FZShuSong-Z01}
       \setCJKsansfont[BoldFont={FZHei-B01},ItalicFont={FZHei-B01}]{FZHei-B01}
@@ -156,13 +155,27 @@
       \newcommand*{\kaishu}{\CJKfamily{zhkai}}
       \newcommand*{\fangsong}{\CJKfamily{zhfs}}}{\relax}
     
-    \ifdefstring{\ELEGANT@chinesefont}{nofont}{
+
+    \ifdefstring{\ET@chinesefont}{macos}{
+      \RequirePackage[UTF8,scheme=plain,fontset=none]{ctex}
+      \setCJKmainfont[BoldFont={STHeitiSC-Light},ItalicFont={STKaitiSC-Regular}]{STSongti-SC-Regular}
+      \setCJKsansfont[BoldFont={STHeitiSC-Medium},ItalicFont={STHeitiSC-Medium}]{STHeitiSC-Medium}
+      \setCJKmonofont[BoldFont={STHeitiSC-Medium},ItalicFont={STHeitiSC-Medium}]{STFangsong}
+      \setCJKfamilyfont{zhsong}{STSongti-SC-Regular}
+      \setCJKfamilyfont{zhhei}{STHeitiSC-Medium}
+      \setCJKfamilyfont{zhkai}{STKaitiSC-Regular}
+      \setCJKfamilyfont{zhfs}{STFangsong}
+      \newcommand*{\songti}{\CJKfamily{zhsong}}
+      \newcommand*{\heiti}{\CJKfamily{zhhei}}
+      \newcommand*{\kaishu}{\CJKfamily{zhkai}}
+      \newcommand*{\fangsong}{\CJKfamily{zhfs}}}{\relax}
+    \ifdefstring{\ET@chinesefont}{nofont}{
       \RequirePackage[UTF8,scheme=plain,fontset=none]{ctex}}{\relax}
 
-    \ifdefstring{\ELEGANT@chinesefont}{ctexfont}{
+    \ifdefstring{\ET@chinesefont}{ctexfont}{
       \RequirePackage[UTF8,scheme=plain]{ctex}}{\relax}
   \else
-    \ifdefstring{\ELEGANT@chinesefont}{ctexfont}{
+    \ifdefstring{\ET@chinesefont}{ctexfont}{
       \RequirePackage[UTF8,scheme=plain]{ctex}}{\relax}
   \fi
   \AfterEndPreamble{
@@ -188,7 +201,7 @@
 
 \RequirePackage{newtxtext}
 \RequirePackage{anyfontsize}
-\ifdefstring{\ELEGANT@math}{newtx}{
+\ifdefstring{\ET@math}{newtx}{
   \RequirePackage{newtxmath}
   \let\Bbbk\relax
   \RequirePackage{esint}
@@ -211,35 +224,41 @@
 %% 章节以及页脚图形
 
 \RequirePackage{xcolor}
-\ifdefstring{\ELEGANT@color}{green}{
+\ifdefstring{\ET@color}{green}{
   \definecolor{structurecolor}{RGB}{0,120,2}%
   \definecolor{main}{RGB}{0,120,2}%
   \definecolor{second}{RGB}{230,90,7}%
   \definecolor{third}{RGB}{0,160,152}%
 }{\relax}
-\ifdefstring{\ELEGANT@color}{cyan}{
+\ifdefstring{\ET@color}{cyan}{
   \definecolor{structurecolor}{RGB}{31,186,190}%
   \definecolor{main}{RGB}{59,180,5}%
   \definecolor{second}{RGB}{175,153,8}%
   \definecolor{third}{RGB}{244,105,102}%
 }{\relax}
-\ifdefstring{\ELEGANT@color}{blue}{
+\ifdefstring{\ET@color}{blue}{
   \definecolor{structurecolor}{RGB}{60,113,183}
   \definecolor{main}{RGB}{0,166,82}%
   \definecolor{second}{RGB}{255,134,24}%
   \definecolor{third}{RGB}{0,174,247}%
 }{\relax}
-\ifdefstring{\ELEGANT@color}{gray}{
+\ifdefstring{\ET@color}{gray}{
   \definecolor{structurecolor}{RGB}{150,150,150}
   \definecolor{main}{RGB}{150,150,150}%
   \definecolor{second}{RGB}{150,150,150}%
   \definecolor{third}{RGB}{150,150,150}%
 }{\relax}
-\ifdefstring{\ELEGANT@color}{black}{
+\ifdefstring{\ET@color}{black}{
   \definecolor{structurecolor}{RGB}{0,0,0}
   \definecolor{main}{RGB}{0,0,0}%
   \definecolor{second}{RGB}{0,0,0}%
   \definecolor{third}{RGB}{0,0,0}%
+}{\relax}
+\ifdefstring{\ET@color}{heda}{
+  \definecolor{structurecolor}{RGB}{0,0,0}
+  \definecolor{main}{RGB}{0,0,0}%
+  \definecolor{second}{RGB}{0,0,0}%
+  \definecolor{third}{RGB}{60,113,183}%
 }{\relax}
 
 %green color
@@ -267,14 +286,19 @@
 \definecolor{main5}{RGB}{0,0,0}%
 \definecolor{second5}{RGB}{0,0,0}%
 \definecolor{third5}{RGB}{0,0,0}%
+% black color
+\definecolor{structure6}{RGB}{0,0,0}
+\definecolor{main6}{RGB}{0,0,0}%
+\definecolor{second6}{RGB}{255,134,24}%
+\definecolor{third6}{RGB}{0,0,0}%
 
 % corlor definition
 \definecolor{winered}{rgb}{0.5,0,0}
 \definecolor{bule}{RGB}{18,29,57}
 
 % ----- Title Style -----
-\ifdefstring{\ELEGANT@titlestyle}{hang}{\def\style{hang}}{\relax}
-\ifdefstring{\ELEGANT@titlestyle}{display}{\def\style{display}}{\relax}
+\ifdefstring{\ET@titlestyle}{hang}{\def\style{hang}}{\relax}
+\ifdefstring{\ET@titlestyle}{display}{\def\style{display}}{\relax}
 
 % reference: 
 % https://tex.stackexchange.com/questions/58506/how-to-make-a-new-command-similar-to-author
@@ -295,8 +319,8 @@
 
 \newcommand{\question}[1]{{\par\citshape #1}\\[0.2ex]}
 
-\ifdefstring{\ELEGANT@lang}{cn}{\relax}{
-  \RequirePackage[\ELEGANT@cite,sort&compress]{natbib}}
+\ifdefstring{\ET@lang}{cn}{\relax}{
+  \RequirePackage[\ET@cite,sort&compress]{natbib}}
 
 \RequirePackage{enumerate}
 % list/itemize/enumerate setting
@@ -314,7 +338,7 @@
   \setlength{\footnotesep}{12pt}
 }
 
-\ifdefstring{\ELEGANT@toc}{twocol}{
+\ifdefstring{\ET@toc}{twocol}{
 \renewcommand{\tableofcontents}{%
 \setlength{\columnsep}{2em}
 %\setlength{\columnseprule}{.8pt}
@@ -338,7 +362,7 @@
 \RequirePackage{fancyvrb}
 \RequirePackage{makecell,lipsum,hologo}
 %%中文结构名字
-\ifdefstring{\ELEGANT@lang}{cn}{
+\ifdefstring{\ET@lang}{cn}{
   \renewcommand{\contentsname}{目录}
   \renewcommand{\figurename}{图}
   \renewcommand{\tablename}{表}
@@ -351,7 +375,7 @@
   \renewcommand{\indexname}{索\hspace{2em}引}
   \newcommand\figref[1]{\textbf{图}~\ref{#1}}
   \newcommand\tabref[1]{\textbf{表}~\ref{#1}}
-  \ifdefstring{\ELEGANT@scheme}{chinese}{
+  \ifdefstring{\ET@scheme}{chinese}{
     \renewcommand{\chaptername}{第~\zhnumber{\arabic{chapter}}~章}}{
     \renewcommand{\chaptername}{第~\thechapter{}~章}}
   \newcommand{\authorname}{\citshape 作者：}
@@ -359,10 +383,10 @@
   \newcommand{\datename}{\citshape 时间：}
   \newcommand{\versionname}{\citshape 版本：}
   \RequirePackage{gbt7714}
-  \ifdefstring{\ELEGANT@cite}{authoryear}{
+  \ifdefstring{\ET@cite}{authoryear}{
     \bibliographystyle{gbt7714-author-year}}{
     \bibliographystyle{gbt7714-numerical}}
-  \ifdefstring{\ELEGANT@cite}{numbers}{
+  \ifdefstring{\ET@cite}{numbers}{
     \citestyle{numbers}}{\relax}
   \newcommand{\notename}{笔记}
   \renewcommand*{\proofname}{证明}
@@ -386,7 +410,7 @@
   \newcommand\bioinfo[2]{\gdef\@bioinfo{{\citshape #1}：#2}}
   \newcommand{\updatename}{更新：}
   \newcommand{\historyname}{版本更新历史}}{\relax}
-\ifdefstring{\ELEGANT@lang}{en}{
+\ifdefstring{\ET@lang}{en}{
   \setlength\parindent{2em}
   \newcommand\figref[1]{\textbf{Figure}~\ref{#1}}
   \newcommand\tabref[1]{\textbf{Table}~\ref{#1}}
@@ -395,7 +419,7 @@
   \newcommand{\institutename}{\textbf{Institute: }}
   \newcommand{\datename}{\textbf{Date: }}
   \newcommand{\versionname}{\textbf{Version: }}
-  \bibliographystyle{\ELEGANT@bibstyle}
+  \bibliographystyle{\ET@bibstyle}
   \newcommand{\notename}{Note}
   \newcommand{\proofname}{Proof}
   \newcommand{\problemname}{Problem}
@@ -420,7 +444,7 @@
   \newcommand{\historyname}{Version History}
 }{\relax}
 
-\ifdefstring{\ELEGANT@lang}{it}{
+\ifdefstring{\ET@lang}{it}{
   \RequirePackage[italian]{babel}
   \setlength\parindent{2em}
   \newcommand\figref[1]{\textbf{Figura}~\ref{#1}}
@@ -430,7 +454,7 @@
   \newcommand{\institutename}{\textbf{Istituto: }}
   \newcommand{\datename}{\textbf{Data: }}
   \newcommand{\versionname}{\textbf{Versione: }}
-  \bibliographystyle{\ELEGANT@bibstyle}
+  \bibliographystyle{\ET@bibstyle}
   \newcommand{\notename}{Nota}
   \newcommand{\proofname}{Dimostrazione}
   \newcommand{\problemname}{Problema}
@@ -494,7 +518,7 @@
 \setcounter{secnumdepth}{5}
 
 \titleformat{\chapter}[\style]{\bfseries}
-{\filcenter\LARGE\enspace\bfseries{\color{structurecolor}\IfAppendix{\appendixname}{\chaptername}\enspace}}{1pt}{\bfseries\color{structurecolor}\LARGE\filcenter}[]
+{\filright\LARGE\enspace\bfseries{\color{structurecolor}\IfAppendix{\appendixname}{\chaptername}\enspace}}{1pt}{\bfseries\color{structurecolor}\LARGE\filright}[]
 
 \titleformat{\section}[hang]{\bfseries}{
   \Large\bfseries{\color{structurecolor}\thesection}\enspace}{1pt}{%
@@ -517,7 +541,7 @@
 
 % \newlength{\normalparindent}
 % \setlength{\normalparindent}{\parindent}
-\ifdefstring{\ELEGANT@mode}{fancy}{
+\ifdefstring{\ET@mode}{fancy}{
   \tcbset{
     common/.style={
       fontupper=\citshape,
@@ -550,7 +574,7 @@
           \textcolor{main}{$\clubsuit$}};}},
     thmstyle/.style={
       common,
-      colframe=second,  
+      colframe=second, 
       colback=second!5,
       colbacktitle=second, 
       overlay unbroken and last={
@@ -558,12 +582,12 @@
           \textcolor{second}{$\heartsuit$}};}},
     propstyle/.style={
       common,
-      colframe=third,  
-      colback=third!5,
-      colbacktitle=third, 
+      colframe=second,  
+      colback=second!5,
+      colbacktitle=second, 
       overlay unbroken and last={
         \node[anchor=south east, outer sep=0pt] at (\linewidth-width,0) {
-          \textcolor{third}{$\spadesuit$}};}},}
+          \textcolor{second}{$\spadesuit$}};}},}
 
   \newtcbtheorem[auto counter,number within=chapter]{definition}{\definitionname}{defstyle}{def}
   \newtcbtheorem[auto counter,number within=chapter]{theorem}{\theoremname}{thmstyle}{thm}
@@ -574,7 +598,7 @@
   \newtcbtheorem[auto counter,number within=chapter]{lemma}{\lemmaname}{thmstyle}{lem}
 }{\relax}
 
-\ifdefstring{\ELEGANT@mode}{simple}{
+\ifdefstring{\ET@mode}{simple}{
   \let\openbox\relax
   \RequirePackage{amsthm}
   \let\proof\relax
@@ -723,7 +747,7 @@
 \def\relsec{\endgroup start}
 \def\endrelsec{end\begingroup\def \@currenvir {relsec}}
 
-\ifdefstring{\ELEGANT@result}{noanswer}{
+\ifdefstring{\ET@result}{noanswer}{
   \AtBeginDocument{
   \excludecomment{solution}
   \excludecomment{proof}
@@ -761,14 +785,14 @@
 \begin{titlepage}
   \newgeometry{margin = 0in}
   \parindent=0pt
-  \ifdefstring{\ELEGANT@device}{normal}{
+  \ifdefstring{\ET@device}{normal}{
     \ifcsname @cover\endcsname
       \includegraphics[width=\linewidth]{\@cover}
     \else
       \includegraphics[width=\linewidth]{example-image}
     \fi
   }{\relax}
-  \ifdefstring{\ELEGANT@device}{pad}{
+  \ifdefstring{\ET@device}{pad}{
     \ifcsname @cover\endcsname
       \includegraphics[trim=0 26bp 0 26bp,clip=true, width=\linewidth]{\@cover}
     \else
@@ -776,13 +800,14 @@
     \fi
   }{\relax}
   \setlength{\fboxsep}{0pt}
-  \colorbox{second}{\makebox[\linewidth][c]{\shortstack[c]{\vspace{0.5in}}}}
+  \colorbox{third}{\makebox[\linewidth][c]{\shortstack[c]{\vspace{1in}}}}
+
   \vfill
-  \vskip-2ex
+  \vskip-32ex
   \hspace{2em}
   \parbox{0.8\textwidth}{
     \bfseries\Huge 
-      \ifcsname @title\endcsname \@title \fi
+      \ifcsname @title\endcsname \textcolor{white}{\@title} \fi
     \par}
   \vfill
   \vspace{-1.0cm}
@@ -846,9 +871,9 @@
   breaklines=true,
   keywordstyle=\color{winered},
   commentstyle=\color{gray},
-  emph={elegantpaper,fontenc,fontspec,xeCJK,FiraMono,xunicode,newtxmath,figure,fig,image,img,table,itemize,enumerate,newtxtext,newtxtt,ctex,microtype,description,times,booktabs,tabular,PDFLaTeX,XeLaTeX,type1cm,BibTeX,device,color,mode,lang,amsthm,tcolorbox,titlestyle,cite,ctex,listings,base,math,scheme,toc,esint,chinesefont,amsmath,bibstyle,natbib,pgfornament},
+  emph={ETpaper,fontenc,fontspec,xeCJK,FiraMono,xunicode,newtxmath,figure,fig,image,img,table,itemize,enumerate,newtxtext,newtxtt,ctex,microtype,description,times,booktabs,tabular,PDFLaTeX,XeLaTeX,type1cm,BibTeX,device,color,mode,lang,amsthm,tcolorbox,titlestyle,cite,ctex,listings,base,math,scheme,toc,esint,chinesefont,amsmath,bibstyle,natbib,pgfornament},
   emphstyle={\color{frenchplum}},
-  morekeywords={DeclareSymbolFont,SetSymbolFont,toprule,midrule,bottomrule,institute,version,includegraphics,setmainfont,setsansfont,setmonofont ,setCJKmainfont,setCJKsansfont,setCJKmonofont,RequirePackage,figref,tabref,email,maketitle,keywords,definecolor,extrainfo,logo,cover,subtitle,appendix,chapter,hypersetup,mainmatter,frontmatter,tableofcontents,elegantpar,heiti,kaishu,lstset,pagecolor,zhnumber,marginpar,part,equote,marginnote,bioinfo,datechange,listofchange,lvert,lastpage,songti,heiti,fangsong,setCJKfamilyfont,textbf},
+  morekeywords={DeclareSymbolFont,SetSymbolFont,toprule,midrule,bottomrule,institute,version,includegraphics,setmainfont,setsansfont,setmonofont ,setCJKmainfont,setCJKsansfont,setCJKmonofont,RequirePackage,figref,tabref,email,maketitle,keywords,definecolor,extrainfo,logo,cover,subtitle,appendix,chapter,hypersetup,mainmatter,frontmatter,tableofcontents,ETpar,heiti,kaishu,lstset,pagecolor,zhnumber,marginpar,part,equote,marginnote,bioinfo,datechange,listofchange,lvert,lastpage,songti,heiti,fangsong,setCJKfamilyfont,textbf},
   frame=single,
   tabsize=2,
   rulecolor=\color{structurecolor},
@@ -862,13 +887,13 @@
 
 % add the list of change history
 \newcommand{\dateinfoline}[2]{
-  \noindent\makebox[0pt][r]{%
+  \makebox[6em][r]{%
   \makebox[-5em][r]{%
     \textbf{\textcolor{structurecolor}{#1}}}\quad}%
   {\citshape\updatename\ignorespaces#2}}
 
 \newcommand{\datechange}[2]{%
-  \noindent{\makebox[\textwidth][r]{\color{structurecolor}\rule{1.15\textwidth}{.4pt}}}
+  \noindent{\makebox[\textwidth][r]{\color{structurecolor}\rule{1.05\textwidth}{.4pt}}}
   \dateinfoline{#1}{#2}
   \addcontentsline{dates}{section}{#1 -- #2}}
 
