@@ -29,6 +29,7 @@
 \DeclareVoidOption{blue}{\ekv{color=blue}}
 \DeclareVoidOption{gray}{\ekv{color=gray}}
 \DeclareVoidOption{black}{\ekv{color=black}}
+\DeclareVoidOption{heda}{\ekv{color=heda}}
 \DeclareVoidOption{nocolor}{\ekv{color=none}}
 \DeclareStringOption[ctexfont]{chinesefont}
 
@@ -37,6 +38,7 @@
 \DeclareVoidOption{ctexfont}{\ekv{chinesefont=ctexfont}}
 \DeclareVoidOption{founder}{\ekv{chinesefont=founder}}
 \DeclareVoidOption{macos}{\ekv{chinesefont=macos}}
+\DeclareVoidOption{win10}{\ekv{chinesefont=win10}}
 \DeclareVoidOption{nofont}{\ekv{chinesefont=nofont}}
 
 \DeclareVoidOption{en}{\ekv{lang=en}}
@@ -169,6 +171,21 @@
       \newcommand*{\heiti}{\CJKfamily{zhhei}}
       \newcommand*{\kaishu}{\CJKfamily{zhkai}}
       \newcommand*{\fangsong}{\CJKfamily{zhfs}}}{\relax}
+
+    \ifdefstring{\ET@chinesefont}{win10}{
+      \RequirePackage[UTF8,scheme=plain,fontset=none]{ctex}
+      \setCJKmainfont[BoldFont={SimHei},ItalicFont={KaiTi}]{SimSun}
+      \setCJKsansfont[BoldFont={Microsoft YaHei-Regular},ItalicFont={Microsoft YaHei-Regular}]{Microsoft YaHei-Regular}
+      \setCJKmonofont[BoldFont={Microsoft YaHei-Regular},ItalicFont={Microsoft YaHei-Regular}]{FangSong}
+      \setCJKfamilyfont{zhsong}{SimSun}
+      \setCJKfamilyfont{zhhei}{Microsoft YaHei-Regular}
+      \setCJKfamilyfont{zhkai}{KaiTi}
+      \setCJKfamilyfont{zhfs}{FangSong}
+      \newcommand*{\songti}{\CJKfamily{zhsong}}
+      \newcommand*{\heiti}{\CJKfamily{zhhei}}
+      \newcommand*{\kaishu}{\CJKfamily{zhkai}}
+      \newcommand*{\fangsong}{\CJKfamily{zhfs}}}{\relax}      
+
     \ifdefstring{\ET@chinesefont}{nofont}{
       \RequirePackage[UTF8,scheme=plain,fontset=none]{ctex}}{\relax}
 
@@ -289,8 +306,8 @@
 % black color
 \definecolor{structure6}{RGB}{0,0,0}
 \definecolor{main6}{RGB}{0,0,0}%
-\definecolor{second6}{RGB}{255,134,24}%
-\definecolor{third6}{RGB}{0,0,0}%
+\definecolor{second6}{RGB}{0,0,0}%
+\definecolor{third6}{RGB}{60,113,183}%
 
 % corlor definition
 \definecolor{winered}{rgb}{0.5,0,0}
@@ -518,7 +535,7 @@
 \setcounter{secnumdepth}{5}
 
 \titleformat{\chapter}[\style]{\bfseries}
-{\filright\LARGE\enspace\bfseries{\color{structurecolor}\IfAppendix{\appendixname}{\chaptername}\enspace}}{1pt}{\bfseries\color{structurecolor}\LARGE\filright}[]
+{\noindent\hspace{-2ex}\LARGE\enspace\bfseries{\color{structurecolor}\IfAppendix{\appendixname}{\chaptername}\enspace}}{1pt}{\bfseries\color{structurecolor}\LARGE}[]
 
 \titleformat{\section}[hang]{\bfseries}{
   \Large\bfseries{\color{structurecolor}\thesection}\enspace}{1pt}{%
@@ -531,7 +548,11 @@
   \color{structurecolor}\large\bfseries\filright}
 
 
-\titlespacing{\chapter}{0pt}{-20pt}{1.3\baselineskip}
+\titlespacing{\chapter}{0ex}{10pt}{3\baselineskip}
+
+\titlespacing{\section}{0ex}{1\baselineskip}{1\baselineskip}
+\titlespacing{\subsection}{0ex}{0.5\baselineskip}{0.5\baselineskip}
+\titlespacing{\subsubsection}{0ex}{0.5\baselineskip}{0.5\baselineskip}
 %\titlespacing{\subsection}{0pt}{0.5\baselineskip}{-\baselineskip}
 
 %%define the note and proof environment
@@ -910,3 +931,8 @@
 \newenvironment{change}{
   \begin{enumerate}[label=\small\protect\circled{\arabic*}]}{
   \end{enumerate}}
+
+\usepackage[acronyms,toc,nonumberlist,nogroupskip]{glossaries}  
+\newglossary{symbols}{sym}{sbl}{List of Symbols}
+\makenoidxglossaries
+\glsnoexpandfields

@@ -1,4 +1,4 @@
-\documentclass[cn,12pt,color=heda,chinesefont=macos,margintrue,toc=twocol,twoside,display,chinese]{etbook}
+\documentclass[cn,12pt,color=heda,chinesefont=win10,margintrue,toc=twocol,twoside,display,chinese]{etbook}
 
 \title{阻抗测量与成像方法}
 \subtitle{副标题}
@@ -18,8 +18,10 @@
 \usepackage{array}
 \newcommand{\ccr}[1]{\makecell{{\color{#1}\rule{1cm}{1cm}}}}
 
-\begin{document}
 
+\input{gloss.tex}
+
+\begin{document}
 \maketitle
 \frontmatter
 
@@ -41,12 +43,28 @@
 
 \mainmatter
 
-\input{chapter/previous.tex}
+% \input{chapter/previous.tex}
+
+\input{chapter/chap-01.tex}
 
 
 \cite{Dashliborun2019a}
 
 
+\gls{ect} is a technique. 
+\gls{ect} is a technique. 
+
+\glsaddall
+
+\setlength{\glsdescwidth}{0.5\linewidth}
+\setlength{\glspagelistwidth}{0.1\linewidth}
+
+
+
+\printnoidxglossary[type=acronym,sort=letter]
+\printnoidxglossary[type=symbols,sort=letter]
+
+% makeindex etbook-cn.nlo -s nomencl.ist -o etbook-cn.nls
 
 \bibliography{../ieee-latex-template-v2/zotero.bib}
 
