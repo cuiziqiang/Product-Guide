@@ -161,10 +161,10 @@
     \ifdefstring{\ET@chinesefont}{macos}{
       \RequirePackage[UTF8,scheme=plain,fontset=none]{ctex}
       \setCJKmainfont[BoldFont={STHeitiSC-Light},ItalicFont={STKaitiSC-Regular}]{STSongti-SC-Regular}
-      \setCJKsansfont[BoldFont={STHeitiSC-Medium},ItalicFont={STHeitiSC-Medium}]{STHeitiSC-Medium}
-      \setCJKmonofont[BoldFont={STHeitiSC-Medium},ItalicFont={STHeitiSC-Medium}]{STFangsong}
+      \setCJKsansfont[BoldFont={SIL-Hei-Med-Jian},ItalicFont={SIL-Hei-Med-Jian}]{SIL-Hei-Med-Jian}
+      \setCJKmonofont[BoldFont={SIL-Hei-Med-Jian},ItalicFont={SIL-Hei-Med-Jian}]{STFangsong}
       \setCJKfamilyfont{zhsong}{STSongti-SC-Regular}
-      \setCJKfamilyfont{zhhei}{STHeitiSC-Medium}
+      \setCJKfamilyfont{zhhei}{SIL-Hei-Med-Jian}
       \setCJKfamilyfont{zhkai}{STKaitiSC-Regular}
       \setCJKfamilyfont{zhfs}{STFangsong}
       \newcommand*{\songti}{\CJKfamily{zhsong}}
@@ -389,6 +389,7 @@
   \renewcommand{\listtablename}{表格目录}
   \renewcommand{\bibname}{参考文献}
   \renewcommand{\appendixname}{附录~\thechapter}
+  % \renewcommand{\acronymname}{缩略词表}
   \renewcommand{\indexname}{索\hspace{2em}引}
   \newcommand\figref[1]{\textbf{图}~\ref{#1}}
   \newcommand\tabref[1]{\textbf{表}~\ref{#1}}
@@ -396,9 +397,9 @@
     \renewcommand{\chaptername}{第~\zhnumber{\arabic{chapter}}~章}}{
     \renewcommand{\chaptername}{第~\thechapter{}~章}}
   \newcommand{\authorname}{\citshape 作者：}
-  \newcommand{\institutename}{\citshape 组织：}
-  \newcommand{\datename}{\citshape 时间：}
-  \newcommand{\versionname}{\citshape 版本：}
+  \newcommand{\institutename}{}
+  \newcommand{\datename}{\citshape}
+  \newcommand{\versionname}{文档编号：}
   \RequirePackage{gbt7714}
   \ifdefstring{\ET@cite}{authoryear}{
     \bibliographystyle{gbt7714-author-year}}{
@@ -424,7 +425,7 @@
   \newcommand{\propertyname}{性质}
   \newcommand{\introductionname}{内容提要}
   \newcommand{\problemsetname}{习题}
-  \newcommand\bioinfo[2]{\gdef\@bioinfo{{\citshape #1}：#2}}
+  \newcommand\bioinfo[2]{\gdef\@bioinfo{{#1}：#2}}
   \newcommand{\updatename}{更新：}
   \newcommand{\historyname}{版本更新历史}}{\relax}
 \ifdefstring{\ET@lang}{en}{
@@ -800,73 +801,51 @@
 
 \renewcommand{\baselinestretch}{1.35} 
 
+
+
+\usepackage{tikz,xcolor,mwe}
+\definecolor{cvgreen}{RGB}{120,52,64}
+\definecolor{cvgray}{RGB}{173,132,127}
+\definecolor{cvtext}{RGB}{255,255,255}
+\usetikzlibrary{shadows}
+
 \renewcommand*{\maketitle}{%
 \hypersetup{pageanchor=false}
 \pagenumbering{Alph}
 \begin{titlepage}
-  \newgeometry{margin = 0in}
-  \parindent=0pt
-  \ifdefstring{\ET@device}{normal}{
-    \ifcsname @cover\endcsname
-      \includegraphics[width=\linewidth]{\@cover}
-    \else
-      \includegraphics[width=\linewidth]{example-image}
-    \fi
-  }{\relax}
-  \ifdefstring{\ET@device}{pad}{
-    \ifcsname @cover\endcsname
-      \includegraphics[trim=0 26bp 0 26bp,clip=true, width=\linewidth]{\@cover}
-    \else
-      \includegraphics[trim=0 26bp 0 26bp,clip=true, width=\linewidth]{example-image}
-    \fi
-  }{\relax}
-  \setlength{\fboxsep}{0pt}
-  \colorbox{third}{\makebox[\linewidth][c]{\shortstack[c]{\vspace{1in}}}}
-
-  \vfill
-  \vskip-32ex
-  \hspace{2em}
-  \parbox{0.8\textwidth}{
-    \bfseries\Huge 
-      \ifcsname @title\endcsname \textcolor{white}{\@title} \fi
-    \par}
-  \vfill
-  \vspace{-1.0cm}
-  \setstretch{2.5}
-  \hspace{2.5em}
-  \begin{minipage}[c]{0.67\linewidth}
-    {\color{darkgray}\bfseries\Large
-      \ifcsname @subtitle\endcsname\@subtitle\\[2ex]\fi}
-    \color{gray}\normalsize
-    {\renewcommand{\arraystretch}{0.618}
-    \begin{tabular}{l}
-      % \ifcsname @author\endcsname \authorname \@author\\\fi
-      \ifx\@author\empty\else\authorname\cnormal\@author\\ \fi
-      \ifcsname @institute\endcsname \institutename \cnormal\@institute\\ \fi
-      % \ifcsname @date\endcsname  \@date\\\fi
-      \ifx\@date\empty\else\datename\cnormal\@date \\ \fi
-      \ifcsname @version\endcsname \cnormal\versionname\@version\\ \fi
-      \ifcsname @bioinfo\endcsname \cnormal\@bioinfo\\ \fi
-    \end{tabular}}
-  \end{minipage}
-  \begin{minipage}[c]{0.27\linewidth}
   \begin{tikzpicture}[remember picture,overlay]
-    \begin{pgfonlayer}{background}
-      \node[opacity=0.8,
-            anchor=south east,
-            outer sep=0pt,
-            inner sep=0pt] at ($(current page.south east) +(-0.8in,1.5in)$) {
-              \ifcsname @logo\endcsname\includegraphics[width=4.2cm]{\@logo}\fi};
-    \end{pgfonlayer}
-  \end{tikzpicture}
-  \end{minipage}
-  \vfill
-  \begin{center}
-    \setstretch{1.3}
-    \parbox[t]{0.7\textwidth}{\centering \citshape 
-      \ifcsname @extrainfo\endcsname\@extrainfo\fi}
-  \end{center}
-  \vfill
+    % green bar
+    \fill[cvgreen] (current page.north west) rectangle ([xshift=7cm]current page.south west);
+    % gray bar
+    \fill[cvgray] ([yshift=-5cm]current page.north west) rectangle ([yshift=-10cm]current page.north east);
+    % title and date
+    \node[cvtext,right] at ([xshift = 3cm, yshift=-7cm]current page.north west) {\addfontfeature{Scale = 15}
+    {\bfseries\Huge
+    \ifcsname @title\endcsname\@title \fi}
+      };
+    \node[cvtext,right] at ([xshift=3cm, yshift=-8.5cm]current page.north west){\bfseries\Large
+    \ifcsname @subtitle\endcsname\@subtitle \fi}
+;
+    % cover photo
+    \node[inner sep=0pt,below] (image) at ([xshift=3cm,yshift=-12cm]current page.north)  {\ifcsname @logo\endcsname\includegraphics[height=6cm]{\@logo}\fi};
+   
+    % name and address
+    \node[align=center, text width=20cm,inner sep=0.3cm, below] (name) at (image.south) 
+    {\large\bfseries \cfs \@extrainfo}; 
+    %{\ifcsname @institute\endcsname \institutename \@institute \fi}
+    % \node[text width=15cm,inner sep=0.3cm,below right] at (name.south west) {\large\obeylines%
+        % slogan
+    % };
+    % attachments
+    \node[white,text width=6cm,inner sep=0.3cm,above right] at ([xshift=0.5cm, yshift=3cm]current page.south west) 
+    {\large\bfseries{\ifcsname @institute\endcsname \institutename \@institute \fi}\\
+    \vspace{1em}
+    {\ifcsname @version\endcsname \versionname\@version \fi}\\
+    \vspace{1em}    
+    {\ifcsname @bioinfo\endcsname \@bioinfo\\ \fi}
+    };
+    
+\end{tikzpicture}
 \end{titlepage}
 \restoregeometry
 \thispagestyle{empty}}
@@ -885,24 +864,56 @@
 
 \definecolor{lightgrey}{rgb}{0.9,0.9,0.9}
 \definecolor{frenchplum}{RGB}{190,20,83}
-\lstset{language=[LaTeX]TeX,
-  texcsstyle=*\color{winered},
-  numbers=none,
-  mathescape,
-  breaklines=true,
-  keywordstyle=\color{winered},
-  commentstyle=\color{gray},
-  emph={ETpaper,fontenc,fontspec,xeCJK,FiraMono,xunicode,newtxmath,figure,fig,image,img,table,itemize,enumerate,newtxtext,newtxtt,ctex,microtype,description,times,booktabs,tabular,PDFLaTeX,XeLaTeX,type1cm,BibTeX,device,color,mode,lang,amsthm,tcolorbox,titlestyle,cite,ctex,listings,base,math,scheme,toc,esint,chinesefont,amsmath,bibstyle,natbib,pgfornament},
-  emphstyle={\color{frenchplum}},
-  morekeywords={DeclareSymbolFont,SetSymbolFont,toprule,midrule,bottomrule,institute,version,includegraphics,setmainfont,setsansfont,setmonofont ,setCJKmainfont,setCJKsansfont,setCJKmonofont,RequirePackage,figref,tabref,email,maketitle,keywords,definecolor,extrainfo,logo,cover,subtitle,appendix,chapter,hypersetup,mainmatter,frontmatter,tableofcontents,ETpar,heiti,kaishu,lstset,pagecolor,zhnumber,marginpar,part,equote,marginnote,bioinfo,datechange,listofchange,lvert,lastpage,songti,heiti,fangsong,setCJKfamilyfont,textbf},
-  frame=single,
-  tabsize=2,
-  rulecolor=\color{structurecolor},
-  framerule=0.2pt,
-  columns=flexible,
-  % backgroundcolor=\color{lightgrey}
-}
+% \lstset{language=[LaTeX]TeX,
+%   texcsstyle=*\color{winered},
+%   numbers=none,
+%   mathescape,
+%   breaklines=true,
+%   keywordstyle=\color{winered},
+%   commentstyle=\color{gray},
+%   emph={ETpaper,fontenc,fontspec,xeCJK,FiraMono,xunicode,newtxmath,figure,fig,image,img,table,itemize,enumerate,newtxtext,newtxtt,ctex,microtype,description,times,booktabs,tabular,PDFLaTeX,XeLaTeX,type1cm,BibTeX,device,color,mode,lang,amsthm,tcolorbox,titlestyle,cite,ctex,listings,base,math,scheme,toc,esint,chinesefont,amsmath,bibstyle,natbib,pgfornament},
+%   emphstyle={\color{frenchplum}},
+%   morekeywords={DeclareSymbolFont,SetSymbolFont,toprule,midrule,bottomrule,institute,version,includegraphics,setmainfont,setsansfont,setmonofont ,setCJKmainfont,setCJKsansfont,setCJKmonofont,RequirePackage,figref,tabref,email,maketitle,keywords,definecolor,extrainfo,logo,cover,subtitle,appendix,chapter,hypersetup,mainmatter,frontmatter,tableofcontents,ETpar,heiti,kaishu,lstset,pagecolor,zhnumber,marginpar,part,equote,marginnote,bioinfo,datechange,listofchange,lvert,lastpage,songti,heiti,fangsong,setCJKfamilyfont,textbf},
+%   frame=single,
+%   tabsize=2,
+%   rulecolor=\color{structurecolor},
+%   framerule=0.2pt,
+%   columns=flexible,
+%   % backgroundcolor=\color{lightgrey}
+% }
 
+
+\lstset{ %
+extendedchars=false,            % Shutdown no-ASCII compatible
+language=Matlab,                % choose the language of the code
+basicstyle=\footnotesize\tt,    % the size of the fonts that are used for the code
+tabsize=3,                            % sets default tabsize to 3 spaces
+numbers=left,                   % where to put the line-numbers
+numberstyle=\tiny,              % the size of the fonts that are used for the line-numbers
+stepnumber=1,                   % the step between two line-numbers. If it's 1 each line
+                                % will be numbered
+numbersep=5pt,                  % how far the line-numbers are from the code   %
+keywordstyle=\color[rgb]{0,0,1},                % keywords
+commentstyle=\color[rgb]{0.133,0.545,0.133},    % comments
+stringstyle=\color[rgb]{0.627,0.126,0.941},      % strings
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=single,                 % adds a frame around the code
+captionpos=b,                   % sets the caption-position to bottom
+breaklines=true,                % sets automatic line breaking
+breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+title=\lstname,                 % show the filename of files included with \lstinputlisting;
+                                % also try caption instead of title
+mathescape=true,escapechar=?    % escape to latex with ?..?
+% escapeinside={\%*}{*)},         % if you want to add a comment within your code
+columns=fixed,                  % nice spacing
+%morestring=[m]',                % strings
+%morekeywords={%,...},%          % if you want to add more keywords to the set
+%    break,case,catch,continue,elseif,else,end,for,function,global,%
+%    if,otherwise,persistent,return,switch,try,while,...},
+backgroundcolor=\color{lightgrey}
+}
 \newcommand\bmmax{0}
 \RequirePackage{bm}
 
